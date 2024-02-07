@@ -18,6 +18,6 @@ jobs:
         shell: bash -l {0} 
         run: nvm install
       
-      - name: Run Discord Bot registration
+      - name: Run npm test
         working-directory: ./md_parser
         run: npm install && npm test

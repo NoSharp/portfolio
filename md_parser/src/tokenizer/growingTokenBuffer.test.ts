@@ -47,7 +47,7 @@ describe("growing token buffer", () => {
   test("push does not allocate extra space when we dont hit the end of the buffer", () => {
     const tokenBuffer = new GrowingTokenBuffer(128);
     tokenBuffer.push("A");
-    expect((tokenBuffer as any)["contentCapacity"] === 128).toBeFalsy();
+    expect((tokenBuffer as any)["contentCapacity"] === 128).toBeTruthy();
     tokenBuffer.push("A");
     expect((tokenBuffer as any)["contentCapacity"] === 128).toBeTruthy();
   });
