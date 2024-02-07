@@ -1,4 +1,3 @@
-import assert from "node:assert";
 import { None, Option, Some } from "../optional";
 import { BaseError, Err, Ok, Result } from "../result";
 
