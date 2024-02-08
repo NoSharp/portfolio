@@ -58,4 +58,17 @@ describe("growing token buffer", () => {
     expect(wasOK.ok).toBeFalsy();
   });
 
+
+  test("Reset removes all content in the buffer", ()=>{
+    const tokenBuffer = new GrowingTokenBuffer(128);
+    tokenBuffer.push("A");
+    tokenBuffer.reset();
+    expect(tokenBuffer.pop().some).toBe(false);
+  })
+  
+  test("toString converts buffer to and from string.", ()=>{
+    const tokenBuffer = new GrowingTokenBuffer(128);
+    tokenBuffer.push("A");
+    expect(tokenBuffer.toString()).toBe("A");
+  })
 });
