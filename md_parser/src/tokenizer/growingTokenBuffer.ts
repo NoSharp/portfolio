@@ -1,5 +1,6 @@
 import { None, Option, Some } from "../optional";
 import { BaseError, Err, Ok, Result } from "../result";
+import { ICharacterStream } from "./stream";
 
 export interface PushArgumentMustBeAChar extends BaseError {
   name: "PushArgumentMustBeAChar";
@@ -11,7 +12,7 @@ function PushArgumentMustBeAChar(): Err<PushArgumentMustBeAChar> {
   });
 }
 
-export class GrowingTokenBuffer {
+export class GrowingTokenBuffer implements ICharacterStream {
   private contents: Uint8Array;
   private currentCursorPosition: number;
   private contentCapacity: number;
@@ -50,6 +51,17 @@ export class GrowingTokenBuffer {
     return Some(
       String.fromCharCode(this.contents[this.currentCursorPosition--])
     );
+  }
+
+  takeCharacter(): string | undefined {
+    if (this.currentCursorPosition >= this.contentCapacity) {
+      return;
+    }
+
+    if(this.currentCursorPosition === 0){
+      return;
+    }
+    return String.fromCharCode(this.contents[this.currentCursorPosition--])
   }
 
   public reset() {
