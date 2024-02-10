@@ -44,26 +44,19 @@ export class FSM<T extends unknown[], K extends string, S extends Exclude<K, U>,
   private states: Map<K, (...args: T) => [K, ...T]>;
   private terminatorState: U;
   private startState: S;
+
   constructor(startState: S, terminatorState: U) {
     this.states = new Map();
     this.startState = startState;
     this.terminatorState = terminatorState;
   }
 
-  addState(targetState: K, callback: (...args: T) => [K, ...T]) {
+  public addState(targetState: K, callback: (...args: T) => [K, ...T]) {
     this.states.set(targetState, callback);
     return this;
   }
 
-  isTerminator(stateName: K): stateName is U {
-    return stateName === this.terminatorState;
-  }
-
-  isStart(stateName: K): stateName is S {
-    return stateName === (this.startState as unknown as K);
-  }
-
-  start(...args: T): Result<T, UndefinedState | InaccessibleState> {
+  public start(...args: T): Result<T, UndefinedState | InaccessibleState> {
     let state = this.startState;
     let stateToCall = this.states.get(state);
     if (stateToCall === undefined) {
@@ -91,6 +84,14 @@ export class FSM<T extends unknown[], K extends string, S extends Exclude<K, U>,
     }
 
     return Ok(nextArgs);
+  }
+  
+  private isTerminator(stateName: K): stateName is U {
+    return stateName === this.terminatorState;
+  }
+
+  private isStart(stateName: K): stateName is S {
+    return stateName === (this.startState as unknown as K);
   }
 }
 
