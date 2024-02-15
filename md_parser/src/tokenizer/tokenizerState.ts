@@ -20,7 +20,7 @@ export class TokenizerState {
     if(this.streamPositon >= this.characterStream.length){
       return undefined;
     }
-    this.currentCharacter = this.characterStream[++this.streamPositon];
+    this.currentCharacter = this.characterStream[this.streamPositon++];
     return this.currentCharacter;
   }
 

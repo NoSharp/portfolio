@@ -9,17 +9,17 @@ describe("tokenizer", () => {
     if(!tokenState.ok) return;
     const tokens = tokenState.value[0].getTokens();
 
-    expect(tokens.length === 1).toBeTruthy();
-    expect(tokens[0].content === "***").toBeTruthy
+    expect(tokens.length).toBe(1);
+    expect(tokens[0].content).toBe("***");
   });
   test("Groups Text as String literal", () => {
     const tokenState = Tokenizer.start(new TokenizerState("Hello World!"));
     expect(tokenState.ok === true).toBeTruthy();
     if(!tokenState.ok) return;
     const tokens = tokenState.value[0].getTokens();
-    expect(tokens.length === 12).toBeTruthy();
-    expect(tokens[0].content === "H").toBeTruthy();
-    expect(tokens[11].content === "!").toBeTruthy();
+    expect(tokens.length).toBe(12);
+    expect(tokens[0].content).toBe("H");
+    expect(tokens[11].content).toBe("!");
   });
 
   test("Groups Headers", () => {
@@ -28,8 +28,8 @@ describe("tokenizer", () => {
     if(!tokenState.ok) return;
     const tokens = tokenState.value[0].getTokens();
 
-    expect(tokens.length === 1).toBeTruthy();
+    expect(tokens.length).toBe(1);
     expect(tokens[0].rule).toBe("HEADER");
-    expect(tokens[0].content === "###").toBeTruthy();
+    expect(tokens[0].content).toBe("###");
   });
 });

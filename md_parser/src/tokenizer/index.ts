@@ -31,11 +31,12 @@ const Tokenizer = new FSM<[TokenizerState], STATES, "START", "STOP">("START", "S
       tokenizerState.addToPocket(char);
       char = tokenizerState.advance();
     }
-
     const newHit: TokenizerRuleHit = {
       rule: "HEADER",
       content: tokenizerState.getPocket()
     }
+
+    console.log(newHit);
 
     tokenizerState.resetPocket();
     tokenizerState.addToken(newHit);
