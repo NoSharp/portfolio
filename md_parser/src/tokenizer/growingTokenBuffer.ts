@@ -1,6 +1,5 @@
 import { None, Option, Some } from "../optional";
 import { BaseError, Err, Ok, Result } from "../result";
-import { ICharacterStream } from "./stream";
 
 export interface PushArgumentMustBeAChar extends BaseError {
   name: "PushArgumentMustBeAChar";
@@ -12,7 +11,7 @@ function PushArgumentMustBeAChar(): Err<PushArgumentMustBeAChar> {
   });
 }
 
-export class GrowingTokenBuffer implements ICharacterStream {
+export class GrowingTokenBuffer {
   private contents: Uint8Array;
   private currentCursorPosition: number;
   private contentCapacity: number;
