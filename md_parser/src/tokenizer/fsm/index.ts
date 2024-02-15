@@ -70,7 +70,7 @@ export class FSM<T extends unknown[], K extends string, S extends Exclude<K, U>,
     while (!this.isTerminator(nextState)) {
       stateToCall = this.states.get(nextState);
       if (stateToCall === undefined) {
-        return UndefinedState(state);
+        return UndefinedState(nextState);
       }
 
       let stateRes = stateToCall(...args);
