@@ -1,14 +1,10 @@
 export const TOKENS: Record<string, string> = {
-  HEADING: "HEADING",
+  HEADER: "HEADER",
   CHARCTER: "CHARACTER",
+  ASTERISK: "ASTERISK",
 } as const;
 
-export interface TokenizerRule {
-  name: keyof typeof TOKENS;
-  pattern: RegExp;
-}
-
 export interface TokenizerRuleHit {
-  rule: TokenizerRule;
+  rule: keyof typeof TOKENS;
   content: string;
 }
