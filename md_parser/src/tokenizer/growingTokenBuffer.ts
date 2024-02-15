@@ -53,7 +53,7 @@ export class GrowingTokenBuffer implements ICharacterStream {
     );
   }
 
-  takeCharacter(): string | undefined {
+  public takeCharacter(): string | undefined {
     if (this.currentCursorPosition >= this.contentCapacity) {
       return;
     }
@@ -62,6 +62,17 @@ export class GrowingTokenBuffer implements ICharacterStream {
       return;
     }
     return String.fromCharCode(this.contents[this.currentCursorPosition--])
+  }
+
+  public peek(): string | undefined {
+    if (this.currentCursorPosition >= this.contentCapacity) {
+      return;
+    }
+
+    if(this.currentCursorPosition === 0){
+      return;
+    }
+    return String.fromCharCode(this.contents[this.currentCursorPosition])
   }
 
   public reset() {
