@@ -1,33 +1,46 @@
 ---
 import Page from '@layouts/page.astro'
 import type {BlogFrontMatter} from '@lib/blogFrontMatter.ts';
-import type { GetStaticPathsResult, MarkdownInstance } from 'astro';
+import type { GetStaticPathsResult } from 'astro';
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+
 
 export async function getStaticPaths() : Promise<GetStaticPathsResult> {
-  const posts : MarkdownInstance<BlogFrontMatter>[] = await Astro.glob<BlogFrontMatter>('../../content/blog/*.md')
-
-  return posts.map(post => ({
+  const collection = await getCollection('blog')
+  return collection
+    .map(post => ({
     params: {
-      blog: post.frontmatter.fSlug
+      blog: post.slug
     },
     props: {
-      post
+      post: post.data,
+      slug: post.slug
     },
   }))
 }
 
-const { Content, frontmatter } = Astro.props.post as {Content: any, frontmatter: BlogFrontMatter }
+type PageProps = {
+  post: BlogFrontMatter,
+  slug: string
+}
+
+const props = Astro.props as PageProps
+const {Content} = await (await getEntry('blog', props.slug))!.render()
+const post = props.post
 ---
 
 <Page>
   <div class="container w-full h-fit max-w-full">
     <div class="h-fit mb-5 w-[75%] md:w-[40%]">
-      <h1 class="text-3xl">{frontmatter.title}</h1>
-      <h2 class="text-l ml-10">{frontmatter.dop}</h2>
-      <h2 class="text-l ml-10">by {frontmatter.author}</h2>
-      <h2 class="text-l ml-10">{frontmatter.description}</h2>
+      <h1 class="text-3xl">{post.title}</h1>
+      <h2 class="text-l ml-10">{post.dop.toDateString()}</h2>
+      <h2 class="text-l ml-10">by {post.author}</h2>
+      <h2 class="text-l ml-10">{post.description}</h2>
       <div class="h-1 mt-1 mb-10 bg-[#cbd5e1]"></div>
-      <Content/>
+      <div class="markdown">
+        <Content/>
+      </div>
     </div>
   </div>
 </Page>

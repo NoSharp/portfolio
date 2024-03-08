@@ -6,4 +6,38 @@ import "@fontsource/space-mono";
   body {
     font-family: "Space Mono", monospace;
   }
+  
+  .container {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .markdown {
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .markdown > p {
+    font-size: medium;
+  }
+
+  .markdown > h2 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .markdown > h1 {
+    font-size: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .markdown > .astro-code {
+    background-color: #020617 !important;
+    border-radius: .5rem;
+    padding: .5rem;
+  }
 </style>
