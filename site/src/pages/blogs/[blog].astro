@@ -1,0 +1,34 @@
+---
+import Page from '../../layouts/page.astro'
+import {BlogFrontMatter} from '../../lib/blogFrontMatter.astro';
+
+const {blog} = Astro.params;
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob<BlogFrontMatter>('../../content/blog/*.md')
+
+  return posts.map(post => ({
+    params: {
+      blog: post.frontmatter.slug
+    },
+    props: {
+      post
+    },
+  }))
+}
+
+const { Content, frontmatter } = Astro.props.post as {Content: any, frontmatter: BlogFrontMatter }
+---
+
+<Page>
+  <div class="container w-full h-fit max-w-full">
+    <div class="h-fit mb-5 w-[75%] md:w-[40%]">
+      <h1 class="text-3xl">{frontmatter.title}</h1>
+      <h2 class="text-l ml-10">{frontmatter.dop}</h2>
+      <h2 class="text-l ml-10">by {frontmatter.author}</h2>
+      <h2 class="text-l ml-10">{frontmatter.description}</h2>
+      <div class="h-1 mt-1 mb-10 bg-[#cbd5e1]"></div>
+      <Content/>
+    </div>
+  </div>
+</Page>
