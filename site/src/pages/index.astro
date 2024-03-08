@@ -11,7 +11,7 @@ const posts = await Astro.glob<BlogFrontMatter>('../content/blog/*.md')
 <Page>
   <div class="container w-full h-fit max-w-full">
     {posts.map((post) => {
-      const url = `/blogs/${post.frontmatter.slug}`
+      const url = `/blogs/${post.frontmatter.fSlug}`
       return (
         <div class="h-fit mb-5 w-[75%] md:w-[40%]">
           <h1 class="text-3xl"><a href={url}>{post.frontmatter.title}</a></h1>
@@ -23,4 +23,3 @@ const posts = await Astro.glob<BlogFrontMatter>('../content/blog/*.md')
 
   </div>
 </Page>
-../lib/blogFrontMatter.ts

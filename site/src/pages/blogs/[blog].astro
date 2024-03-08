@@ -8,7 +8,7 @@ export async function getStaticPaths() : Promise<GetStaticPathsResult> {
 
   return posts.map(post => ({
     params: {
-      blog: post.frontmatter.slug
+      blog: post.frontmatter.fSlug
     },
     props: {
       post

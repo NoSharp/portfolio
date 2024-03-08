@@ -2,7 +2,7 @@
 title: Test Blog
 description: I am a cool test description
 author: Harry Kerr
-slug: test-blog
+fSlug: test-blog
 dop: 08/03/2024
 ---
 
