@@ -1,21 +1,30 @@
 ---
-import '../components/global.astro'
-import Header from '../components/header.astro'
-import '/src/index.css'
+import "../components/global.astro";
+import Header from "../components/header.astro";
+import "/src/index.css";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>  
-		<title>plsno</title>
-	</head>
-	<body class="bg-[#0f172a] text-[#cbd5e1]">
-    <Header/>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="plsno.cc"
+      href={`${Astro.site}rss.xml`}
+    />
+    <title>plsno</title>
+  </head>
+  <body class="bg-[#0f172a] text-[#cbd5e1]">
+    <Header />
     <div class="container w-full h-fit max-w-full">
-      <slot/>
+      <slot />
     </div>
-	</body>
+  </body>
 </html>

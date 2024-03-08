@@ -1,6 +1,6 @@
 ---
 import Page from '@layouts/page.astro'
-import type {BlogFrontMatter} from '../../lib/blogFrontMatter.astro';
+import type {BlogFrontMatter} from '@lib/blogFrontMatter.ts';
 import type { GetStaticPathsResult, MarkdownInstance } from 'astro';
 
 export async function getStaticPaths() : Promise<GetStaticPathsResult> {

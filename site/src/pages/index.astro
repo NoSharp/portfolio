@@ -1,7 +1,7 @@
 ---
 import '../components/global.astro'
 import Page from '../layouts/page.astro'
-import type {BlogFrontMatter} from "../lib/blogFrontMatter.astro"
+import type {BlogFrontMatter} from "@lib/blogFrontMatter.ts"
 
 
 const posts = await Astro.glob<BlogFrontMatter>('../content/blog/*.md')
@@ -23,3 +23,4 @@ const posts = await Astro.glob<BlogFrontMatter>('../content/blog/*.md')
 
   </div>
 </Page>
+../lib/blogFrontMatter.ts
