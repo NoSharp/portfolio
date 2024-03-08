@@ -1,11 +1,10 @@
 ---
-import Page from '../../layouts/page.astro'
-import {BlogFrontMatter} from '../../lib/blogFrontMatter.astro';
+import Page from '@layouts/page.astro'
+import type {BlogFrontMatter} from '../../lib/blogFrontMatter.astro';
+import type { GetStaticPathsResult, MarkdownInstance } from 'astro';
 
-const {blog} = Astro.params;
-
-export async function getStaticPaths() {
-  const posts = await Astro.glob<BlogFrontMatter>('../../content/blog/*.md')
+export async function getStaticPaths() : Promise<GetStaticPathsResult> {
+  const posts : MarkdownInstance<BlogFrontMatter>[] = await Astro.glob<BlogFrontMatter>('../../content/blog/*.md')
 
   return posts.map(post => ({
     params: {
