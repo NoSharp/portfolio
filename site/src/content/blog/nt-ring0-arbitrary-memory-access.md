@@ -2,8 +2,8 @@
 title: NT Ring0 Arbitrary Memory Access
 description: Hunting arbitrary ring0 memory access vulnerabilities
 author: Harry Kerr
-fSlug: nt-ring0-arbitrary-memory-access
 dop: 03/08/2024
+wip: true
 ---
 
 # Hello & Preface

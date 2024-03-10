@@ -1,20 +1,20 @@
 ---
+import { getCollection } from 'astro:content'
 import '../components/global.astro'
 import Page from '../layouts/page.astro'
-import type {BlogFrontMatter} from "@lib/blogFrontMatter.ts"
-
-const posts = await Astro.glob<BlogFrontMatter>('../content/blog/*.md')
-
+const collection = await getCollection('blog')
 ---
 
 <Page>
   <div class="container w-full h-fit max-w-full">
-    {posts.map((post) => {
-      const url = `/blogs/${post.frontmatter.fSlug}`
+    {collection
+    .filter((post) => !post.data.wip)
+    .map((post) => {
+      const url = `/blogs/${post.slug}`
       return (
         <div class="h-fit mb-5 w-[75%] md:w-[40%]">
-          <h1 class="text-3xl"><a href={url}>{post.frontmatter.title}</a></h1>
-          <h2 class="text-l">{post.frontmatter.description}</h2>
+          <h1 class="text-3xl"><a href={url}>{post.data.title}</a></h1>
+          <h2 class="text-l">{post.data.description}</h2>
         </div>
       )
     })
