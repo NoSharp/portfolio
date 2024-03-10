@@ -46,46 +46,51 @@ So all drivers share the same address space. This is important because we'll lik
 
 ## AMD64/x86-64 Long-Mode Page Translation
 
-
 ### Brief information on Model Specific Registers
 The MSRs are a set of registers used to track things like CPU features[10].
 To read/write to these registers we need CPL (Current Privilege Level) 0, which essentially means we need access to be "kernel level" and for the code we're running to be in kernel space.
 We can read these registers using the instruction `rdmsr`.
-`rdmsr` takes in one parameter in `ECX`, the MSR register number, then returns the MSR data in `EAX, EBX, ECX and EDX`.
+`rdmsr` takes in the MSR register number from the `ECX` register, then returns the MSR data in `EAX, EBX, ECX and EDX` registers.
+An example of rdmsr being used with a garbage register:
+```asm
+mov 1234567, eax ; move our value into ECX
+rdmsr ; MSR now reads from ECX
+```
 
 ### Determining if Long-Mode Page Translation is enabled
-In-order to detect if the processor is running with Long-Mode Page translation running, we need to do a few things,
-we need to check if the processor is running in Long-Mode which enables 64-bit addressing and the 64-bit functionality of the CPU,
-if PSE (Physical Address Extensions) and PSE (Page-Size extensions) are enabled.
+In-order to detect if the processor is running with Long-Mode Page translation enabled, we need to do a few things.
+- The processor is running in Long-Mode which enables 64-bit addressing and the 64-bit functionality of the CPU,
+- PSE (Physical Address Extensions) and PSE (Page-Size extensions) are enabled.
+
 To check if the processor is running in Long Mode we need to read something called an MSR (Model Specfic Register), PAE and PSE. 
-For long mode the status of this feature is stored in the MSR EFER (Extended features enable register).
-PAE allow 52-bit Physical Addresses, 4 Peta-Bytes of physical memory[6].
-PSE set the page size to 4 Mega Bytes[6] this will be explained later on.
+For Long Mode the status of this feature is stored in the MSR EFER (Extended Features Enable Register).
+If PAE is enabled it will allow 52-bit Physical Addresses, 4 Peta-Bytes of physical memory[6].
+Finally, if PSE is enabled, the page size will be set to 4 Mega-Bytes[6], this will be explained later on.
 
 Let's write some code to check if this is all enabled.
 There is an assembly instruction called "cpuid", this instruction is used to retrieve information from the processor, 
 things like what technologies are enabled, the type of processor etc.
-To check if PAE and PSE is enabled, we want to use leaf `1`. A leaf is a way for us to tell the processor what information we want, this is passed on the EAX register.
-The PAE bit (showing if it's enabled) is returned in the EDX Register, on the 6th bit and PSE on the 3rd bit [9]. 
+To check if PAE and PSE is enabled, we want to use leaf `1`. A leaf is a way for us to tell the processor what information we want, this is passed on to the EAX register.
+Different bits in the data passed to the EDX register will tell us what features are enabled. PAE will be shown via the 6th bit and the PSE via the 3rd bit.
 
-We need to also check if the EFER MSR is in long-mode by using `rdmsr` from earlier, with the model register `0xC0000080` (EFER).
+We need to also check if the EFER MSR is in Long Mode by using `rdmsr` from earlier, with the model register number `0xC0000080` (EFER).
 On the EFER register we want to check bit `10` or LMA (Long Mode Active), if it's `1` then it's active.
 
 We can do this in the following code:
 ```c
-    int registers[4] = {
-    0x0, // EAX
-    0x0, // EBX
-    0x0, // ECX
-    0x0 // EDX
-  };
-  __cpuid(registers, 1);
-  printf("PAE bit: %d\n", registers[3] & (1 << 6));
-  printf("PSE bit: %d\n", registers[3] & (1 << 3));
+int registers[4] = {
+  0x0, // EAX
+  0x0, // EBX
+  0x0, // ECX
+  0x0 // EDX
+};
+__cpuid(registers, 1);
+printf("PAE bit: %d\n", registers[3] & (1 << 6));
+printf("PSE bit: %d\n", registers[3] & (1 << 3));
 
-  // REQUIRES CPL 0
-  unsigned long long efer = __readmsr(0xC0000080);
-  printf("LMA active: %d\n", (int)(efer & (1 << 10)));
+// REQUIRES CPL 0
+unsigned long long efer = __readmsr(0xC0000080);
+printf("LMA active: %d\n", (int)(efer & (1 << 10)));
 ```
 We expect, if PAE is enabled, for this to return something non-zero, same for PSE and LMA.
 And it does:
@@ -218,6 +223,7 @@ undefined8 FUN_140249750(PVOID param_1, ulonglong *param_2,undefined4 *param_3)
 Some of the references aren't cited in the blog post, however they helped me understand the topic.
 This blog post is standing on the shoulders of giants linked below.
 
+My lovely girlfriend [Emily](https://emilymedhurst.gay/) for making sure my ramblings made sense (if something is wrong it's on me entirely though).
 1) [OS-Dev](https://wiki.osdev.org/Expanded_Main_Page)
 2) [DMA OS-Dev](https://wiki.osdev.org/ISA_DMA)
 3) [MMU OS-Dev](https://wiki.osdev.org/MMU)
